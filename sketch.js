@@ -3,6 +3,10 @@ let rectX = 150;
 let rectY = 450;
 //let play_;
 
+// function preload(){
+//   point_ = loadSound('point.wav');
+// }
+
 function setup(){
   createCanvas(400, 500);
   color1 = color(219, 20, 20);
@@ -21,23 +25,25 @@ let flag = true;
 let playing = false;
 let ins = false;
 let menu_ = false;
+//let over = true;
 
 //button variables
 let play_;
 let instruct;
 let home;
+//let home1;
 
-let pages = ["menu", "instruct"]
-let state = "menu"
+let pages = ["menu", "instruct", "over"];
+let state = "menu";
 
 function draw(){
-
+//reference for buttons: https://p5js.org/reference/#/p5/createButton
 //background(222, 222, 222);
 //play_.mousePressed(modeOne);
 
 //  modes();
   //modeOne();
-  if (playing === true){
+  if(playing == true){
     play_.remove();
     instruct.remove();
     modeOne();
@@ -56,9 +62,9 @@ function draw(){
   //   ins = false;
   // }
 
-  if (state==="menu"){
+  if(state == "menu"){
     //home.remove();
-    if (flag === true){
+    if(flag == true){
 
       play_ = createButton('Play');
       instruct = createButton('Instructions');
@@ -66,15 +72,16 @@ function draw(){
 
       menu(play_, instruct);
       //instructions(home);
-      flag = false;
+      flag = false; // so it only loops once
       //menu_ = true;
     }
+    console.log("flag = ", flag);
   }
-  else if (state=="instruct") {
+  else if(state == "instruct") {
     play_.remove();
     instruct.remove();
 
-    if (ins === true){
+    if(ins == true){
       background(222, 222, 222);
       fill(0);
       home = createButton('Menu');
@@ -89,22 +96,46 @@ function draw(){
       instructions();
       ins = false;
     }
-    //home.remove();
-
-    console.log("instruct = ", state);
   }
+    //home.remove();
+   if(state == "over"){
+     gameOver();
+     // function keyPressed(){
+     //   if(keyCode === 32){
+     //     restart();
+     //     // state = "menu";
+     //     // flag = true;
+     //   }
+     }
+     //over = true;
+      // if(over === true){
+      //   home1 = createButton('Menu');
+      //   home1.position(170, 400);
+      //   home1.mousePressed(function() {
+      //     home1.remove();
+      //     state = "menu";
+      //     flag = true;
+      //     over = false;
+      //   });
+      //   gameOver(home1);
+      //
+      // }
+
+    //console.log("over = ", over);
+    console.log("instruct = ", state);
+
 
 }
 
 function menu(play_, instruct){
   background(222, 222, 222);
   fill(0);
-  textSize(100);
-  text('NAME', 50, 140);
+  textSize(70);
+  text('CATCH IT!', 30, 140);
   //play_ = createButton('Play');
-  play_.position(170, 200);
+  play_.position(this.width/2 - 30, 200);
   play_.mousePressed(playGame);
-  instruct.position(170, 300);
+  instruct.position(this.width/2 - 30, 300);
   instruct.mousePressed(instr);
 
 
@@ -125,6 +156,8 @@ function menu(play_, instruct){
   }*/
 }
 
+
+///////changing button flags/////////
 function playGame(){
   playing = true;
 }
@@ -133,7 +166,14 @@ function instr(){
   ins = true;
   state = "instruct";
 }
+//////////////////////////////////////
 
+// function restart(){
+//   flag = true;
+//   state = "menu";
+// }
+
+/*
 function home_(){
 
   //menu_ = true;
@@ -144,31 +184,40 @@ state = "menu";
     flag = true;
   //}
 }
+*/
 
-function modes(){
-  background(222, 222, 222);
-  fill(0);
-  textSize(100);
-  text('NAME', 50, 140);
-}
+// function over_(){
+//   over = true;
+//   //state = "over";
+//
+// }
 
+
+// function modes(){
+//   background(222, 222, 222);
+//   fill(0);
+//   textSize(100);
+//   text('NAME', 50, 140);
+// }
+
+//the actual game
 function modeOne(){
-
+  // let time = frameCount;
   //controls the speed of the rectangle
-  if(frameCount < 750){
-    if(keyIsDown(LEFT_ARROW)){
+  if(frameCount < (time + 750)){
+    if(keyIsDown(LEFT_ARROW) && rectX >= 0){
       rectX -= 10;
     }
-    if(keyIsDown(RIGHT_ARROW)){
+    if(keyIsDown(RIGHT_ARROW) && rectX <= 300){
       rectX += 10;
     }
   }
 
-  if(frameCount >= 750){
-    if(keyIsDown(LEFT_ARROW)){
+  if(frameCount >= (time + 750)){
+    if(keyIsDown(LEFT_ARROW) && rectX >= 0){
       rectX -= 15;
     }
-    if(keyIsDown(RIGHT_ARROW)){
+    if(keyIsDown(RIGHT_ARROW) && rectX <= 300){
       rectX += 15;
     }
   }
@@ -188,19 +237,22 @@ function modeOne(){
   ball3.collide();
   //ball4.collide();
 
-  if(frameCount > 500){
+  if(frameCount > (time + 500)){
     ball2.display0();
     ball2.collide();
   }
 
-  if(frameCount > 1000){
+  if(frameCount > (time + 1000)){
     ball4.display_();
     ball4.collide_();
   }
+  console.log("state = ", state)
 }
 
 
 function gameOver(){
+  //state = "over";
+  //over_();
   background(222, 222, 222);
   fill(0);
   textSize(100);
@@ -209,22 +261,55 @@ function gameOver(){
   textSize(25);
   text('SCORE:', 50, 450);
   text(score, 250, 450);
+console.log("state = ", state);
+keyPressed();
 }
+
+// function keyPressed(){
+//   if(keyCode === 32){
+//     restart();
+//     // state = "menu";
+//     // flag = true;
+//   }
+// }
+
+  // if(mousePressed()){
+  //   flag = true;
+  // }
+  // function keyPressed(){
+  //   if(keyCode === 32){
+  //     state = "menu";
+  //   }
+  // }
+
 
 
 function instructions(){
   //console.log(state)
   // background(222, 222, 222);
   // fill(0);
-  textSize(100);
-  text('NAME', 50, 140);
+  textSize(70);
+  text('CATCH IT!', 30, 140);
   textSize(15);
   text('Catch the balls before they fall of the screen', 50, 200);
-  text('Red, Blue, and Green balls earn 1 point each', 50, 250);
-  text('Yellow balls earn 5 points', 50, 300);
+  text('Use arrow keys to move', 50, 250);
+  text('Red, Blue, and Green balls earn 1 point each', 50, 300);
+  text('Yellow balls earn 5 points', 50, 350);
   //home = createButton('Menu');
 
 
-  console.log("state = ", state)
+  console.log("state = ", state);
 
 }
+
+// function keyPressed(){
+//   if(keyCode === 32 && state == "over"){
+//     state = "menu";
+//     flag = true;
+//   }
+ //}
+
+//creates varible to make framecount "restart" when game starts
+ function mousePressed(){
+   time = frameCount;
+ }

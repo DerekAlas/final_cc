@@ -2,15 +2,16 @@ class Ball{
   constructor(color){
     this.color = color;
     this.x = random(10, 360);
+    this.x_ = this.x + random(-200, 200); //randomizes x-pos of yellow ball at last second
     this.y = 50;
     this.width = 50;
     this.height = 50;
-    this.speed_ = 3; //yellow speed
+    this.speed_ = 6; //yellow speed
     this.speed0 = 4; //green speed
 
     //controls how fast the red and blue balls fall
     //gets faster with time
-    if(frameCount < 300){
+    if(frameCount < 500){
       this.speed = random(1, 2);
     }
 
@@ -44,11 +45,15 @@ class Ball{
     fill(this.color);
 
     if(this.y < 350){
-      ellipse(this.x, this.y, this.width, this.height);
+      ellipse(this.x_, this.y, this.width, this.height);
     }
 
+    // if(this.y >= 300 && this.y < 350){
+    //   ellipse(this.x + random(-100, 100), this.y, this.width, this.height);
+    // }
+
     if(this.y >= 350){
-      ellipse(this.x += random(-100, 100), this.y, this.width, this.height);
+      ellipse(this.x, this.y, this.width, this.height);
     }
 
     this.y += this.speed_;
@@ -73,24 +78,33 @@ class Ball{
     */
   }
 
+  reset_(){
+    this.y = -1000;
+    this.x = random(10, 360);
+  }
+
   collide(){
     if(this.y + 25 > 440 && this.y - 25 < 460 && this.x > rectX && this.x < rectX + 100){
       score++;
       this.reset();
+      //point_.play();
     }
     if(this.y > 530){
       noLoop();
-      gameOver();
+      //gameOver();
+      //over_();
+      //over = true;
+      state = "over";
     }
   }
 
   collide_(){
     if(this.y + 25 > 440 && this.y - 25 < 460 && this.x > rectX && this.x < rectX + 100){
       score += 5;
-      this.reset();
+      this.reset_();
     }
     if(this.y > 530){
-      this.reset();
+      this.reset_();
     }
   }
 }
